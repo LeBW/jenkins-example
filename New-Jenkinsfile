@@ -12,14 +12,16 @@ node {
         env.PATH = "${mavenHome}/bin:${dockerHome}:${env.PATH}"
     }
 
+    stage ("Check Out") {
+        checkout scm
+    }
+
     stage ("Build") {
-        sh 'pwd'
-        sh 'ls'
         sh "mvn clean package -P test -DskipTests"
         sh "docker build -t ${IMAGE_NAME} ."
     }
 
-    stage ("test") {
+    stage ("Test") {
         sh "mvn test -P test"
         sh "mvn pmd:pmd -P test"
     }
