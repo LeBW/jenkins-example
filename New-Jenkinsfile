@@ -25,6 +25,9 @@ pipeline =  {
     stage ("Test") {
         sh "mvn test -P test"
         sh "mvn pmd:pmd -P test"
+
+        def pmd = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
+        publishIssues issues: [pmd]
     }
 
     stage ("Deploy") {
