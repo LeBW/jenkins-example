@@ -17,6 +17,7 @@ node {
     }
 
     stage ("Build") {
+        sh "mvn -version"
         sh "mvn clean package -P test -DskipTests"
         sh "docker build -t ${IMAGE_NAME} ."
     }
