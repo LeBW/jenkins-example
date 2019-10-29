@@ -41,7 +41,7 @@ pipeline =  {
 
 postFailure = {
     echo 'Stages Failed'
-    throw e
+    throw
 }
 
 postAlways = {
