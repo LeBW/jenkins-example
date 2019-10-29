@@ -52,14 +52,12 @@ postAlways = {
     publishIssues issues: [pmd]
 
     // 在Jenkins中报告jacoco检测结果
-    jacoco(
-        execPattern: 'target/jacoco.exec',
-        classPattern: 'target/classes',
-        sourcePattern: 'src/main/java',
-        changeBuildStatus: true,
-        minimumMethodCoverage:'1',maximumMethodCoverage:'70',
-        minimumClassCoverage:'1',maximumClassCoverage:'70'
-        )
+    step([$class: 'JacocoPublisher', 
+      execPattern: 'target/*.exec',
+      classPattern: 'target/classes',
+      sourcePattern: 'src/main/java',
+      exclusionPattern: 'src/test*'
+])
 }
 
 node {
