@@ -1,11 +1,11 @@
-node {
-    def CONTAINER_NAME="leaveword"
-    def CONTAINER_TAG="latest"
-    def DOCKER_HUB_USER="libw521"
-    def HTTP_PORT="8081"
-    def NETWORK_NAME="leaveword_leaveword-network"
-    def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
+def CONTAINER_NAME="leaveword"
+def CONTAINER_TAG="latest"
+def DOCKER_HUB_USER="libw521"
+def HTTP_PORT="8081"
+def NETWORK_NAME="leaveword_leaveword-network"
+def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
 
+pipeline =  {
     stage ("Initialize") {
         def mavenHome = tool "mvn-3.6.2"
         def dockerHome = tool "myDocker"
@@ -36,6 +36,27 @@ node {
             echo "There is no container: ${CONTAINER_NAME}"
         }
         sh "docker run -d -p ${HTTP_PORT}:${HTTP_PORT} --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
+    }
+}
+
+postFailure = {
+    echo 'Stages Failed'
+    throw e
+}
+
+postAlways = {
+    junit testResults: "**/target/surefire-reports/*.xml"
+}
+
+node {
+    try {
+        pipeline()
+    }
+    catch (e) {
+        postFailure()
+    }
+    finally {
+        postAlways()
     }
 }
 
