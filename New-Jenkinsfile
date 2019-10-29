@@ -41,7 +41,6 @@ pipeline =  {
 
 postFailure = {
     echo 'Stages Failed'
-    throw
 }
 
 postAlways = {
@@ -54,6 +53,7 @@ node {
     }
     catch (e) {
         postFailure()
+        throw e
     }
     finally {
         postAlways()
