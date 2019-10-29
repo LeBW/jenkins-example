@@ -1,0 +1,37 @@
+node {
+    def CONTAINER_NAME="leaveword"
+    def CONTAINER_TAG="latest"
+    def DOCKER_HUB_USER="libw521"
+    def HTTP_PORT="8081"
+    def NETWORK_NAME="leaveword_leaveword-network"
+    def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
+
+    stage ("Initialize") {
+        def mavenHome = tool "mvn-3.6.2"
+        def dockerHome = tool "myDocker"
+        env.PATH = "${mavenHome}/bin:${dockerHome}:${env.PATH}"
+    }
+
+    stage ("test") {
+        sh "mvn test -P test"
+        sh "mvn pmd:pmd -P test"
+    }
+
+    stage ("Build") {
+        sh "mvn clean package -P test -DskipTests"
+        sh "docker build -t ${IMAGE_NAME} ."
+    }
+
+    stage ("Deploy") {
+        try {
+            sh "docker stop ${CONTAINER_NAME}"
+            sh "docker rm ${CONTAINER_NAME}"
+        }
+        catch (exc) {
+            echo "There is no container: ${CONTAINER_NAME}"
+        }
+        sh "docker run -d -p ${HTTP_PORT}:${HTTP_PORT} --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
+    }
+}
+
+
