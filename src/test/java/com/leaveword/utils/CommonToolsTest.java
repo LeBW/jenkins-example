@@ -9,9 +9,12 @@ public class CommonToolsTest {
     public void isEmpty() {
         assertFalse(CommonTools.isEmpty("test"));
         assertTrue(CommonTools.isEmpty(""));
+        assertTrue(CommonTools.isEmpty(null));
     }
 
     @Test
     public void getCurrentTime() {
+        assertEquals(CommonTools.getCurrentTime(),CommonTools.getCurrentTime());
+
     }
 }
