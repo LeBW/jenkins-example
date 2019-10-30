@@ -38,7 +38,7 @@ public class UserServiceImplTest {
         assertEquals(new Response("-1","用户名不能为空"),new UserServiceImpl().userRegister(null,""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userRegister("test",""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userRegister("test",null));
-        //assertEquals(new Response("-1", "插入用户异常"),new UserServiceImpl().userRegister("test","test"));
+        assertEquals(new Response("-1", "插入用户异常"),new UserServiceImpl().userRegister("test","test"));
     }
 
     @Test
