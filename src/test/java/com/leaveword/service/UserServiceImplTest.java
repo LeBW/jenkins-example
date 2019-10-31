@@ -1,5 +1,10 @@
 package com.leaveword.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.leaveword.domain.User;
+import com.leaveword.repository.UserRepository;
+import com.leaveword.utils.CommonTools;
 import com.leaveword.utils.Response;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,18 +32,32 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class UserServiceImplTest {
 
+    @Autowired
+    private UserServiceImpl userService;
+
     @Test
     public void getUser() {
+
+//        User user=userService.userRepository.findByUserName("123");
+//        assertEquals(new Response("0", JSON.toJSONString(user))
     }
 
     @Test
     public void userRegister() {
+//        User user = new User();
+//        user.setUserName("1031");
+//        user.setUserPassword("1031");
+//        user.setRegisterTime(CommonTools.getCurrentTime());
+//        userService.userRepository.save(user);
+
+
         assertEquals(new Response("-1","用户名不能为空"),new UserServiceImpl().userRegister("","123"));
         assertEquals(new Response("-1","用户名不能为空"),new UserServiceImpl().userRegister("",""));
         assertEquals(new Response("-1","用户名不能为空"),new UserServiceImpl().userRegister(null,""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userRegister("test",""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userRegister("test",null));
         assertEquals(new Response("-1", "插入用户异常"),new UserServiceImpl().userRegister("test","test"));
+        assertEquals(new Response("-1","此用户名已经存在"),userService.userRegister("123","123"));
     }
 
     @Test
@@ -48,6 +67,8 @@ public class UserServiceImplTest {
         assertEquals(new Response("-1","用户名不能为空"),new UserServiceImpl().userLogin(null,""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userLogin("test",""));
         assertEquals(new Response("-1","用户密码不能为空"),new UserServiceImpl().userLogin("test",null));
+        assertEquals(new Response("-1","密码错误"),userService.userLogin("123","2222"));
+        assertEquals(new Response("0","{\"registerTime\":\"2019-10-14 22:18:09\",\"userId\":1,\"userName\":\"123\",\"userPassword\":\"\"}"),userService.userLogin("123","123"));
 
     }
 }
