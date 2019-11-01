@@ -8,10 +8,10 @@ def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
 pipeline =  {
     stage ("Initialize") {
         if (env.BRANCH_NAME != 'master') {
-            CONTAINER_NAME = "${CONTAINER_NAME}-{CONTAINER_TAG}"
             CONTAINER_TAG = env.BRANCH_NAME
-            HTTP_PORT = "8082"
             IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
+            CONTAINER_NAME = "${CONTAINER_NAME}-${CONTAINER_TAG}"
+            HTTP_PORT = "8082"
         }
         sh 'printenv'
         sh 'echo $PATH'
