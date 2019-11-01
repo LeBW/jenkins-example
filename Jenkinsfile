@@ -44,7 +44,7 @@ pipeline =  {
         catch (exc) {
             echo "There is no container: ${CONTAINER_NAME}"
         }
-        sh "docker run -d -p ${HTTP_PORT}:${HTTP_PORT} --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
+        sh "docker run -d -p ${HTTP_PORT}:8081 --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
     }
 }
 
