@@ -26,7 +26,7 @@ pipeline =  {
     }
 
     stage ("Build") {
-        sh "mvn clean package -P test -DskipTests"
+        sh "mvn clean package -P prod -DskipTests"
         sh "docker build -t ${IMAGE_NAME} ."
     }
 
