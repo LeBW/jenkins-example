@@ -7,6 +7,12 @@ def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
 
 pipeline =  {
     stage ("Initialize") {
+        if (env.BRANCH_NAME != 'master') {
+            CONTAINER_TAG = env.BRANCH_NAME
+            IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
+            CONTAINER_NAME = "${CONTAINER_NAME}-${CONTAINER_TAG}"
+            HTTP_PORT = "8082"
+        }
         sh 'printenv'
         sh 'echo $PATH'
         def mavenHome = tool "mvn-3.6.2"
@@ -20,7 +26,7 @@ pipeline =  {
     }
 
     stage ("Build") {
-        sh "mvn clean package -P prod -DskipTests"
+        sh "mvn clean package -P test -DskipTests"
         sh "docker build -t ${IMAGE_NAME} ."
     }
 
@@ -38,7 +44,7 @@ pipeline =  {
         catch (exc) {
             echo "There is no container: ${CONTAINER_NAME}"
         }
-        sh "docker run -d -p ${HTTP_PORT}:${HTTP_PORT} --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
+        sh "docker run -d -p ${HTTP_PORT}:8081 --name ${CONTAINER_NAME} --network ${NETWORK_NAME} ${IMAGE_NAME}"
     }
 }
 
