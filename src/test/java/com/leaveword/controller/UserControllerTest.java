@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.*;
@@ -36,14 +37,15 @@ public class UserControllerTest {
     }
 
     @Test
+    @Transactional
     public void userRegister() throws Exception {
          mockMvc.perform(MockMvcRequestBuilders.post("/userRegister")
                                                .accept(MediaType.APPLICATION_JSON)
-                                               .param("userName", "Jack")
-                                               .param("userPassword", "Jack001"))
+                                               .param("userName", "Sack")
+                                               .param("userPassword", "Sack001"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(userService.userRegister("Jack","Jack001").getStatus()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(userService.userRegister("Jack","Jack001").getContent()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(userService.userRegister("Sack","Sack001").getStatus()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").value(userService.userRegister("Sack","Sack001").getContent()))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
     }

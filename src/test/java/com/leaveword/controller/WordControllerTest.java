@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.Assert.*;
@@ -36,14 +37,15 @@ public class WordControllerTest {
     }
 
     @Test
+    @Transactional
     public void leaveWord() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/leaveWord")
                                               .accept(MediaType.APPLICATION_JSON)
                                               .param("userId", "1")
-                                              .param("title", "Jack001")
-                                              .param("content", "Jack001"))
+                                              .param("title", "Sack001")
+                                              .param("content", "Sack001"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(wordService.leaveWord(1,"Jack001","Jack001").getStatus()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(wordService.leaveWord(1,"Sack001","Sack001").getStatus()))
                 //.andExpect(MockMvcResultMatchers.jsonPath("$.content").value(wordService.leaveWord(1,"Jack001","Jack001").getContent()))
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
