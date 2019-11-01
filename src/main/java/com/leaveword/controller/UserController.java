@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author guoxiaofeng
+ */
 @RestController
 @EnableAutoConfiguration
 public class UserController {
@@ -49,6 +52,7 @@ public class UserController {
     public Response userLogin(@RequestParam("userName")String userName,
                               @RequestParam("userPassword")String userPassword){
         return userService.userLogin(userName,userPassword);
+
     }
 
 
