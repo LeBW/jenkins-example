@@ -7,9 +7,12 @@ def IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
 
 pipeline =  {
     stage ("Initialize") {
+        sh 'printenv'
+        sh 'echo $PATH'
         def mavenHome = tool "mvn-3.6.2"
         def dockerHome = tool "myDocker"
         env.PATH = "${mavenHome}/bin:${dockerHome}:${env.PATH}"
+        sh 'echo $PATH'
     }
 
     stage ("Check Out") {
