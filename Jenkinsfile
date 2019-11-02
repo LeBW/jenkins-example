@@ -13,7 +13,7 @@ pipeline =  {
             CONTAINER_NAME = "${CONTAINER_NAME}-${CONTAINER_TAG}"
             HTTP_PORT = "8082"
         }
-        else if (env.BRANCH_NAME == 'feature') {
+        else if (env.BRANCH_NAME.contains('feature')) {
             CONTAINER_TAG = env.BRANCH_NAME
             IMAGE_NAME = "${DOCKER_HUB_USER}/${CONTAINER_NAME}:${CONTAINER_TAG}"
             CONTAINER_NAME = "${CONTAINER_NAME}-${CONTAINER_TAG}"
