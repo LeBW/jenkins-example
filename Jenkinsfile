@@ -40,6 +40,24 @@ pipeline =  {
         // 执行单元测试和pmd静态代码检测
         sh "mvn test -P test"
         sh "mvn pmd:pmd -P test"
+
+        // 在Jenkins中报告单元测试结果
+        junit testResults: "**/target/surefire-reports/*.xml"
+
+        // 在Jenkins中报告pmd静态代码检测结果
+        def pmd = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
+        publishIssues issues: [pmd]
+
+        // 在Jenkins中报告jacoco检测结果
+        jacoco(
+            execPattern: 'target/jacoco.exec',
+            classPattern: 'target/classes',
+            sourcePattern: 'src/main/java',
+            exclusionPattern: 'src/test*',
+            changeBuildStatus: true
+            //minimumMethodCoverage:'1',maximumMethodCoverage:'70',
+            //minimumClassCoverage:'1',maximumClassCoverage:'70'
+            )
     }
 
     stage ("Deploy") {
@@ -59,23 +77,7 @@ postFailure = {
 }
 
 postAlways = {
-    // 在Jenkins中报告单元测试结果
-    junit testResults: "**/target/surefire-reports/*.xml"
 
-    // 在Jenkins中报告pmd静态代码检测结果
-    def pmd = scanForIssues tool: pmdParser(pattern: '**/target/pmd.xml')
-    publishIssues issues: [pmd]
-
-    // 在Jenkins中报告jacoco检测结果
-    jacoco(
-        execPattern: 'target/jacoco.exec',
-        classPattern: 'target/classes',
-        sourcePattern: 'src/main/java',
-        exclusionPattern: 'src/test*',
-        changeBuildStatus: true
-        //minimumMethodCoverage:'1',maximumMethodCoverage:'70',
-        //minimumClassCoverage:'1',maximumClassCoverage:'70'
-        )
     step([$class: 'Mailer',
                             notifyEveryUnstableBuild: true,
                             recipients: "libw521@qq.com",
