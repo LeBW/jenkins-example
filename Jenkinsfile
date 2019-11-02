@@ -76,6 +76,11 @@ postAlways = {
         //minimumMethodCoverage:'1',maximumMethodCoverage:'70',
         //minimumClassCoverage:'1',maximumClassCoverage:'70'
         )
+    step([$class: 'Mailer',
+                            notifyEveryUnstableBuild: true,
+                            recipients: "libw521@qq.com",
+                            sendToIndividuals: true])
+
 }
 
 node {
