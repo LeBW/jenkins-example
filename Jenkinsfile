@@ -74,6 +74,7 @@ pipeline =  {
 
 postFailure = {
     echo 'Stages Failed'
+    currentBuild.result = 'FAILURE'
 }
 
 postAlways = {
