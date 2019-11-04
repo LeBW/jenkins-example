@@ -3,6 +3,8 @@
 
 项目所用工程：LeaveWord。一个简单的留言板项目。使用的开发框架为Spring Boot + JPA，数据库为MySQL，前端开发工具集为Bootstrap。
 
+Jenkins Pipeline 文件位于`./Jenkinsfile`	，采用脚本式语法编写。
+
 ## 运行说明
 ### 本地运行
 #### 创建数据库
